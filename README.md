@@ -9,12 +9,10 @@
 
 - Geometry Shaderの例
     - "[Shaders/Unlit-Geometry-LogoAnimation.shader](https://github.com/mao-test-h/EffectiveDokabenLogo-Samples/blob/master/Assets/_MainContents/Shaders/Unlit-Geometry-LogoAnimation.shader)"を参照
-
 - Materialの自動適用の例
     - "[Scripts/Editor/AutoLogoChanger.cs](https://github.com/mao-test-h/EffectiveDokabenLogo-Samples/blob/master/Assets/_MainContents/Scripts/Editor/AutoLogoChanger.cs)"を参照
     - ※機能の有効/無効は「Preferences -> Logo Settings」より設定可能
-
-- ScriptableRenderPipeline(DLRP)の例
+- ScriptableRenderPipelineの例
     - 自作したRenderPipelineについては"[Scripts/DokabenRenderPipeline.cs](https://github.com/mao-test-h/EffectiveDokabenLogo-Samples/blob/master/Assets/_MainContents/Scripts/DokabenRenderPipeline.cs)"を参照
     - RenderPipeline用に実装したShaderについては"[Shaders/SRP-Unlit-Geometry-LogoAnimation.shader](https://github.com/mao-test-h/EffectiveDokabenLogo-Samples/blob/master/Assets/_MainContents/Shaders/SRP-Unlit-Geometry-LogoAnimation.shader)"を参照
 
@@ -27,3 +25,9 @@
         - Scene : **InstancedIndirectSample.unity**
         - Source : "[Scripts/InstancedIndirectSample.cs](https://github.com/mao-test-h/EffectiveDokabenLogo-Samples/blob/master/Assets/_MainContents/Scripts/InstancedIndirectSample.cs)"
         - Indirect用のShader : "[Shaders/SRP-Unlit-Geometry-LogoAnimation-Indirect.shader](https://github.com/mao-test-h/EffectiveDokabenLogo-Samples/blob/master/Assets/_MainContents/Shaders/SRP-Unlit-Geometry-LogoAnimation-Indirect.shader)"
+
+
+# ▽ その他
+
+- [ドカベンメーカー](https://arkw.net/products/web/dokaben//)
+    - フォント生成に使用
