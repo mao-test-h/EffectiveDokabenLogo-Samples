@@ -33,51 +33,31 @@ Shader "Custom/SRP-Unlit-Geometry-LogoAnimation-Indirect"
             }
 
             CGPROGRAM
-            #pragma vertex vert
-            #pragma geometry geom
-            #pragma fragment frag
-
-            #include "UnityCG.cginc"
-
-            struct appdata
-            {
-                float4 vertex : POSITION;
-                float4 uv : TEXCOORD0;
-                uint vid : SV_VertexID;
-            };
-            
-            struct v2g  // vert → geom
-            {
-                float4 vertex : SV_POSITION;
-                float4 uv : TEXCOORD0;  // float4(uv.x, uv.y, SV_VertexID, 0)
-            };
-
-            struct g2f  // geom → frag
-            {
-                float4 vertex : SV_POSITION;
-                float2 uv : TEXCOORD0;
-            };
+            #pragma vertex logo_instance_vert
+            #pragma geometry logo_instance_geom
+            // "logo_frag"のみLogo.cgincに実装
+            #pragma fragment logo_frag
 
             // Propertiesに定義した値
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float4 _Scale;
 
-            // C#側から渡すインスタンスの座標
+            #include "UnityCG.cginc"
+            #include "Logo.cginc"
+
+            // C#側から渡すインスタンス毎の座標
             StructuredBuffer<float3> _Positions;
 
 
             // ------------------------------------------------------------
             // 頂点シェーダー
-            v2g vert(appdata v, uint instanceID : SV_InstanceID)
+            v2g logo_instance_vert(appdata v, uint instanceID : SV_InstanceID)
             {
                 v2g o;
-                o.vertex = v.vertex;
-                o.uv = v.uv;
                 // geom側にSV_VertexIDを渡せないので代わりに使っていないuv.zに入れておく
-                o.uv.z = v.vid;
-                // uv.wにSV_InstanceIDを入れておく。(StructuredBufferから座標を引っ張る時に参照)
-                o.uv.w = instanceID;
+                // uv.wにはSV_InstanceIDを入れておく。(StructuredBufferから座標を引っ張る時に参照)
+                o.uv = float4(0, 0, v.vid, instanceID);
                 return o;
             }
 
@@ -86,7 +66,7 @@ Shader "Custom/SRP-Unlit-Geometry-LogoAnimation-Indirect"
             // ※引数には1頂点のみを受け取る
             //      → 中で4頂点に増やすことで板ポリにしてTextureを貼るイメージ
             [maxvertexcount(4)]
-            void geom(point v2g input[1], inout TriangleStream<g2f> outStream)
+            void logo_instance_geom(point v2g input[1], inout TriangleStream<g2f> outStream)
             {
                 // 1頂点分のみロゴを生成(ここで塞き止めないと頂点分だけロゴが生まれる)
                 uint vid = input[0].uv.z;
@@ -151,14 +131,6 @@ Shader "Custom/SRP-Unlit-Geometry-LogoAnimation-Indirect"
                 outStream.RestartStrip();
             }
 
-            // ------------------------------------------------------------
-            // フラグメントシェーダ―
-            fixed4 frag (g2f i) : SV_Target
-            {
-                fixed4 col = tex2D(_MainTex, i.uv);
-                clip(col.a - 0.5);
-                return col;
-            }
             ENDCG
         }
     }
